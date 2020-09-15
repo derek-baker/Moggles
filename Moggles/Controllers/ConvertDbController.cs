@@ -5,9 +5,11 @@ using Moggles.Domain;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Moggles.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/ConvertDb")]
     public class ConvertDbController : Controller

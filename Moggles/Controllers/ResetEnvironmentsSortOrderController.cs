@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Moggles.Controllers
 {
-    [Authorize(Policy = "OnlyAdmins")]
+    [Authorize]
     [Produces("application/json")]
     [Route("api/ResetEnvironmentsSortOrder")]
     public class ResetEnvironmentsSortOrderController :Controller

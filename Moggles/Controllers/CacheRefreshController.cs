@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Moggles.Domain;
@@ -9,6 +10,7 @@ using MogglesContracts;
 
 namespace Moggles.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/CacheRefresh")]
     public class CacheRefreshController : Controller

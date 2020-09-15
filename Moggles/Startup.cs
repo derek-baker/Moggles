@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using GreenPipes;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ using NoDb;
 using Moggles.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.IdentityModel.Tokens;
 using Moggles.Hubs;
 
 namespace Moggles
@@ -33,10 +35,7 @@ namespace Moggles
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
-
-            ConfigureAuthServices(services);
 
             services.AddSignalR(o =>
             {
@@ -52,6 +51,19 @@ namespace Moggles
 
 
             services.AddApplicationInsightsTelemetry();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Jwt")["TokenSigningKey"]))
+                    };
+                });
 
             ConfigureDatabaseServices(services);
 
@@ -72,14 +84,6 @@ namespace Moggles
         {
             services.AddDbContext<TogglesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FeatureTogglesConnection")));
-        }
-
-        public virtual void ConfigureAuthServices(IServiceCollection services)
-        {
-            var admins = Configuration.GetSection("CustomRoles")["Admins"];
-
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
-            services.AddAuthorization(options => { options.AddPolicy("OnlyAdmins", policy => policy.RequireRole(admins)); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

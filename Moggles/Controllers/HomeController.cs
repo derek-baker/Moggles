@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Moggles.Controllers
 {
-    [Authorize(Policy = "OnlyAdmins")]
+    [Authorize]
     public class HomeController : Controller
     {
        

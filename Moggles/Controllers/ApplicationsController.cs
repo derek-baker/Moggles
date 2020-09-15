@@ -4,9 +4,11 @@ using Moggles.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Moggles.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/Applications")]
     public class ApplicationsController : Controller
