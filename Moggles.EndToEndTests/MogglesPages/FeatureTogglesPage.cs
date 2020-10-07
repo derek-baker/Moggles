@@ -3,7 +3,6 @@ using NsTestFrameworkUI.Helpers;
 using NsTestFrameworkUI.KendoHelpers;
 using NsTestFrameworkUI.Pages;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
 using System.Threading;
@@ -22,7 +21,6 @@ namespace MogglesEndToEndTests.MogglesPages
         private readonly By _addFeatureToggleButton = By.Id("addFeatureToggleBtn");
         private readonly By _closeAddToggleModalBtn = By.Id("closeAddToggleModalBtn");
         private readonly By _addApplicationButton = By.Id("addApplicationBtn");
-        private readonly By _closeAddApplicationModalBtn = By.Id("closeAddApplicationModalBtn");
         private readonly By _addEnvironmentButton = By.Id("addEnvironmentBtn");
         private readonly By _closeAddEnvironmentModalBtn = By.Id("closeAddEnvironmentModalBtn");
 
@@ -136,7 +134,6 @@ namespace MogglesEndToEndTests.MogglesPages
             _firstEnvNameInput.ActionSendKeys(firstEnvName);
             _addApplicationButton.ActionClick();
             WaitHelpers.ExplicitWait();
-            _closeAddApplicationModalBtn.ActionClick();
         }
 
         public void AddNewEnvironment(string newEnvironmentName)
